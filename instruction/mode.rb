@@ -7,6 +7,16 @@ module Instruction
     ZAP = 2
     FLOW = 3
 
-    def self.count = 4
+    def self.all
+      [BOUNCE, GHOST, ZAP, FLOW]
+    end
+
+    def self.each(&block)
+      all.each(&block)
+    end
+
+    def self.count
+      all.size
+    end
   end
 end
