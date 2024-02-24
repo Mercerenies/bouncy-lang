@@ -2,6 +2,7 @@
 
 require_relative '../point'
 require_relative '../instruction'
+require_relative './error'
 
 module Language
   class Grid
@@ -48,7 +49,11 @@ module Language
 
     def find_starting_point
       starting_points = each_point.filter { |point| self[point] == Instruction::START }.first
-      starting_points.first if starting_points.size == 1
+      case starting_points.size
+      when 0 then raise Error, 'No starting point ($) found'
+      when 1 then starting_points.first
+      else raise Error, 'Multiple starting points ($) found'
+      end
     end
 
     def to_s
