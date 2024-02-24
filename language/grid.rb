@@ -56,7 +56,7 @@ module Language
     end
 
     def find_starting_point
-      starting_points = each_point.filter { |point| self[point] == Instruction::START }.first
+      starting_points = each_point.filter { |point| self[point] == Instruction::START_TOKEN }.first
       case starting_points.size
       when 0 then raise Error, 'No starting point ($) found'
       when 1 then starting_points.first
