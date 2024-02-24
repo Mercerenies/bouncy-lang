@@ -24,6 +24,14 @@ module Language
       @height = [point.y + 1, @height].max
     end
 
+    def empty?
+      @body.empty?
+    end
+
+    def bounds
+      Point[width, height]
+    end
+
     def self.load_from_string(string)
       grid = new
       string.split("\n").each.with_index do |line, y|
