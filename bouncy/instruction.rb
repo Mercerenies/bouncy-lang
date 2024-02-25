@@ -14,7 +14,7 @@ module Bouncy
 
     def self.put_register(value)
       proc do |state|
-        state.register_value = value
+        state.primary_register = value
       end
     end
 
@@ -28,37 +28,38 @@ module Bouncy
         Command.new(' ', &noop),
         # Control flow
         Command.new('@', &:terminate_program),
-        Command.new('#') { |state| state.mode = (state.mode + state.register_value) % Mode.count },
+        Command.new('#') { |state| state.mode = (state.mode + state.primary_register) % Mode.count },
         ReflectionCommand.new('\\'),
         ReflectionCommand.new('/'),
         ReflectionCommand.new('_'),
         ReflectionCommand.new('|'),
         # Memory
         Command.new('T', &put_register(10)),
-        Command.new('S') { |state| state.memory_value = state.register_value },
-        Command.new('L') { |state| state.register_value = state.memory_value },
-        Command.new('(') { |state| state.memory_pointer += state.register_value },
-        Command.new(')') { |state| state.memory_pointer -= state.register_value },
+        Command.new('S') { |state| state.memory_value = state.primary_register },
+        Command.new('L') { |state| state.primary_register = state.memory_value },
+        Command.new('(') { |state| state.memory_pointer += state.primary_register },
+        Command.new(')') { |state| state.memory_pointer -= state.primary_register },
+        Command.new('"', &:swap_registers),
         # Arithmetic
-        Command.new('+') { |state| state.register_value += state.memory_value },
-        Command.new('-') { |state| state.register_value -= state.memory_value },
-        Command.new('*') { |state| state.register_value *= state.memory_value },
-        Command.new('%') { |state| state.register_value /= state.memory_value }, # NOTE: Integer division
-        Command.new('m') { |state| state.register_value = state.register_value % state.memory_value }, # NOTE: Modulo
-        Command.new('n') { |state| state.register_value *= -1 },
-        Command.new('~') { |state| state.register_value = boolify(state.register_value != 0) },
-        Command.new('&') { |state| state.register_value &= state.memory_value },
-        Command.new(';') { |state| state.register_value |= state.memory_value },
-        Command.new('^') { |state| state.register_value ^= state.memory_value },
+        Command.new('+') { |state| state.primary_register += state.memory_value },
+        Command.new('-') { |state| state.primary_register -= state.memory_value },
+        Command.new('*') { |state| state.primary_register *= state.memory_value },
+        Command.new('%') { |state| state.primary_register /= state.memory_value }, # NOTE: Integer division
+        Command.new('m') { |state| state.primary_register = state.primary_register % state.memory_value }, # NOTE: Modulo
+        Command.new('n') { |state| state.primary_register *= -1 },
+        Command.new('~') { |state| state.primary_register = boolify(state.primary_register != 0) },
+        Command.new('&') { |state| state.primary_register &= state.memory_value },
+        Command.new(';') { |state| state.primary_register |= state.memory_value },
+        Command.new('^') { |state| state.primary_register ^= state.memory_value },
         # Comparison
-        Command.new('<') { |state| state.register_value = boolify(state.register_value < state.memory_value) },
-        Command.new('=') { |state| state.register_value = boolify(state.register_value == state.memory_value) },
-        Command.new('>') { |state| state.register_value = boolify(state.register_value > state.memory_value) },
+        Command.new('<') { |state| state.primary_register = boolify(state.primary_register < state.memory_value) },
+        Command.new('=') { |state| state.primary_register = boolify(state.primary_register == state.memory_value) },
+        Command.new('>') { |state| state.primary_register = boolify(state.primary_register > state.memory_value) },
         # Input / Output
-        Command.new('p') { |state| puts state.register_value }, # Print as number
-        Command.new('P') { |state| print state.register_value.chr }, # Print as ASCII
-        Command.new('i') { |state| state.register_value = $stdin.gets.to_i }, # Input as number
-        Command.new('I') { |state| state.register_value = $stdin.getch.ord }, # Input as ASCII
+        Command.new('p') { |state| puts state.primary_register }, # Print as number
+        Command.new('P') { |state| print state.primary_register.chr }, # Print as ASCII
+        Command.new('i') { |state| state.primary_register = $stdin.gets.to_i }, # Input as number
+        Command.new('I') { |state| state.primary_register = $stdin.getch.ord }, # Input as ASCII
       ] + NUMERICAL_COMMANDS
     ).freeze
 

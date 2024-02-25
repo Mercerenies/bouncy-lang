@@ -12,14 +12,15 @@ module Bouncy
     class Interpreter
       attr_reader :grid, :instruction_pointer
 
-      attr_accessor :register_value, :memory_pointer, :mode
+      attr_accessor :primary_register, :secondary_register, :memory_pointer, :mode
 
       def initialize(grid)
         @grid = grid
         @instruction_pointer = Pointer.new(grid.bounds, grid.find_starting_point)
         @data_arrays = Instruction::Mode.each.map { |mode| [mode, DataArray.new] }.to_h
         @mode = Instruction::Mode.default
-        @register_value = 0
+        @primary_register = 0
+        @secondary_register = 0
         @memory_pointer = 0
         @done = false
       end
@@ -37,6 +38,7 @@ module Bouncy
       end
 
       def run_once
+        #p("#{@instruction_pointer.position.y+1}, #{@instruction_pointer.position.x}")
         current_char = grid[instruction_pointer.position] || ' '
         command = Instruction.command(current_char)
         raise Error, "Unknown command #{current_char}" unless command
@@ -59,6 +61,10 @@ module Bouncy
 
       def memory_value=(value)
         active_array[memory_pointer] = value
+      end
+
+      def swap_registers
+        self.primary_register, self.secondary_register = secondary_register, primary_register
       end
     end
   end
