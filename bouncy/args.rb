@@ -3,7 +3,11 @@
 require 'optparse'
 
 module Bouncy
+  # Command line arguments structure. Stores the result of parsing
+  # ARGV.
   class Args
+    # Error raised when the required input filename argument is not
+    # supplied, or when multiple input filenames are supplied.
     class ExpectedFilenameError < StandardError
       def initialize
         super('Expected filename')
