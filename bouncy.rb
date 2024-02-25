@@ -16,9 +16,7 @@ def execute_program(program_string)
   interpreter.run
 end
 
-example_program = <<~PROGRAM.chomp
-  $1S2+p@
-  .....
-  .....
-PROGRAM
-execute_program example_program
+filename = ARGV[0]
+raise "Expected filename as argument" unless filename
+program_text = File.read(filename).chomp
+execute_program program_text
