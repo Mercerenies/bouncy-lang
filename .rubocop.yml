@@ -13,6 +13,3 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
-
-Style/OneLineConditional:
-  Enabled: false

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative './instruction/command'
+require_relative './instruction/reflection_command'
+require_relative './instruction/mode'
 
 module Instruction
   START_TOKEN = '$'
@@ -19,12 +21,17 @@ module Instruction
 
   ALL_COMMANDS = (
     [
-      # Noops
+      # No-ops
       Command.new('$', &noop), # Starting character
       Command.new('.', &noop),
       Command.new(' ', &noop),
       # Control flow
       Command.new('@', &:terminate_program),
+      Command.new('#') { |state| state.mode = (state.mode + state.register_value) % Mode.count },
+      ReflectionCommand.new('\\'),
+      ReflectionCommand.new('/'),
+      ReflectionCommand.new('_'),
+      ReflectionCommand.new('|'),
       # Memory
       Command.new('S') { |state| state.memory_value = state.register_value },
       Command.new('L') { |state| state.register_value = state.memory_value },
@@ -64,6 +71,6 @@ module Instruction
   end
 
   def self.boolify(value)
-    if value then 1 else 0 end
+    value ? 1 : 0
   end
 end
