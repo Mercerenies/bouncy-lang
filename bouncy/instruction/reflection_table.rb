@@ -64,11 +64,11 @@ module Bouncy
         '/' => {
           Point.north => Point.northeast,
           Point.northeast => Point.northeast,
-          Point.east => Point.southwest,
+          Point.east => Point.northeast,
           Point.southeast => Point.southwest,
           Point.south => Point.southwest,
           Point.southwest => Point.southwest,
-          Point.west => Point.northeast,
+          Point.west => Point.southwest,
           Point.northwest => Point.northeast,
         }.freeze,
         '\\' => {
