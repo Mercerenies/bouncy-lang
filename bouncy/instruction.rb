@@ -5,13 +5,24 @@ require_relative './instruction/reflection_command'
 require_relative './instruction/mode'
 
 module Bouncy
+  # This module contains all of the instructions available in the
+  # Bouncy programming language, as well as helpers for working with
+  # them.
   module Instruction
     START_TOKEN = '$'
 
+    # Returns a proc which does nothing when called.
+    #
+    # @return [Proc]
     def self.noop
       proc {}
     end
 
+    # Returns a proc which assigns the given value to the primary
+    # register when invoked.
+    #
+    # @param value [Integer] The constant value to set
+    # @return [Proc]
     def self.put_register(value)
       proc do |state|
         state.primary_register = value
@@ -45,7 +56,7 @@ module Bouncy
         Command.new('-') { |state| state.primary_register -= state.memory_value },
         Command.new('*') { |state| state.primary_register *= state.memory_value },
         Command.new('%') { |state| state.primary_register /= state.memory_value }, # NOTE: Integer division
-        Command.new('m') { |state| state.primary_register = state.primary_register % state.memory_value }, # NOTE: Modulo
+        Command.new('m') { |state| state.primary_register = state.primary_register % state.memory_value },
         Command.new('n') { |state| state.primary_register *= -1 },
         Command.new('~') { |state| state.primary_register = boolify(state.primary_register != 0) },
         Command.new('&') { |state| state.primary_register &= state.memory_value },
@@ -65,14 +76,26 @@ module Bouncy
 
     COMMANDS_HASH = ALL_COMMANDS.map { |c| [c.name, c] }.to_h
 
+    # A hash of all commands, indexed by their single-character
+    # name.
+    #
+    # @return [Hash<String, Command>]
     def self.commands
       COMMANDS_HASH
     end
 
+    # Returns the command with the given name, or nil if no such
+    # command.
+    #
+    # @return [Command, nil]
     def self.command(name)
       commands[name]
     end
 
+    # Converts the Boolean value to a Bouncy-friendly integer.
+    #
+    # @param value [Boolean] The input value
+    # @return [Integer] 1 if value is true, 0 otherwise
     def self.boolify(value)
       value ? 1 : 0
     end

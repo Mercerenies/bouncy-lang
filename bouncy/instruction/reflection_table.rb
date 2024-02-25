@@ -5,6 +5,10 @@ require_relative '../point'
 
 module Bouncy
   module Instruction
+    # Module for evaluating wall instructions and determining which
+    # way the instruction pointer should point.
+    #
+    # @see ReflectionCommand
     module ReflectionTable
       ID_TABLE = {
         Point.north => Point.north,
@@ -160,8 +164,18 @@ module Bouncy
         Mode::FLOW => FLOW_TABLE,
       }.freeze
 
+      # Evaluates a wall instruction and returns the new delta for the
+      # instruction pointer.
+      #
+      # @param mode [Integer] The current interpreter mode
+      # @param char [String] The wall to evaluate
+      # @param delta [Point] The current delta value
+      #
+      # @return [Point] The new delta value
+      # @raise [ArgumentError] If the lookup in the reflection table fails
       def self.evaluate(mode, char, delta)
-        TABLE.dig(mode, char, delta) or raise "Lookup in reflection table failed for #{mode}, #{char}, #{delta}"
+        TABLE.dig(mode, char, delta) or
+          raise ArgumentError, "Lookup in reflection table failed for #{mode}, #{char}, #{delta}"
       end
     end
   end

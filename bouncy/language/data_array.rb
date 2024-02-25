@@ -9,12 +9,20 @@ module Bouncy
         @impl = {}
       end
 
+      # @param index [Integer] The index into the array
+      #
+      # @return [Integer] The value at the given index, or 0 if
+      # uninitialized
       def [](index)
         @impl.fetch(index, 0)
       end
 
+      # @param index [Integer] The index into the array
+      # @param value [Integer] The new value
+      #
+      # @return [Integer] The new value
       def []=(index, value)
-        raise TypeError, 'Value must be numeric' unless value.is_a? Numeric
+        raise TypeError, 'Value must be an integer' unless value.is_a? Integer
 
         @impl[index] = value
       end
