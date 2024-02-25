@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-# rubocop:disable Naming/MethodParameterName
 module Bouncy
   class Point
     attr_reader :x, :y
+
+    # rubocop:disable Naming/MethodParameterName
 
     def initialize(x, y)
       @x = x
@@ -42,4 +43,5 @@ module Bouncy
     def self.northwest = Point[-1, -1]
   end
 end
+
 # rubocop:enable Naming/MethodParameterName
