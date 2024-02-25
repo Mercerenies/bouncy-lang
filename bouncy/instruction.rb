@@ -34,6 +34,7 @@ module Bouncy
         ReflectionCommand.new('_'),
         ReflectionCommand.new('|'),
         # Memory
+        Command.new('T', &put_register(10)),
         Command.new('S') { |state| state.memory_value = state.register_value },
         Command.new('L') { |state| state.register_value = state.memory_value },
         Command.new('(') { |state| state.memory_pointer += state.register_value },

@@ -17,6 +17,7 @@ def execute_program(program_string)
 end
 
 filename = ARGV[0]
-raise "Expected filename as argument" unless filename
+raise 'Expected filename as argument' unless filename
+
 program_text = File.read(filename).chomp
 execute_program program_text
