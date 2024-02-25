@@ -37,7 +37,7 @@ module Bouncy
       end
 
       def run_once
-        current_char = grid[instruction_pointer.position]
+        current_char = grid[instruction_pointer.position] || ' '
         command = Instruction.command(current_char)
         raise Error, "Unknown command #{current_char}" unless command
 
