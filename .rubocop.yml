@@ -3,7 +3,10 @@ AllCops:
   TargetRubyVersion: 3.1.0
 
 Style/Documentation:
-  Enabled: false
+  Enabled: true
+
+Style/DocumentationMethod:
+  Enabled: true
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
@@ -16,3 +19,6 @@ Style/TrailingCommaInArguments:
 
 Style/AccessModifierDeclarations:
   EnforcedStyle: inline
+
+Style/SpecialGlobalVars:
+  Enabled: false
