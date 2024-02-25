@@ -48,8 +48,8 @@ module Bouncy
         Command.new('T', &put_register(10)),
         Command.new('S') { |state| state.memory_value = state.primary_register },
         Command.new('L') { |state| state.primary_register = state.memory_value },
-        Command.new('(') { |state| state.memory_pointer += state.primary_register },
-        Command.new(')') { |state| state.memory_pointer -= state.primary_register },
+        Command.new('(') { |state| state.memory_pointer -= state.primary_register },
+        Command.new(')') { |state| state.memory_pointer += state.primary_register },
         Command.new('"', &:swap_registers),
         # Arithmetic
         Command.new('+') { |state| state.primary_register += state.memory_value },
