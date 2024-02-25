@@ -5,6 +5,8 @@ Official interpreter for the Bouncy programming language. Run as
 
     ruby bouncy.rb <input-filename>
 
+Check out the [Esolangs page](https://esolangs.org/wiki/Bouncy) for official documentation.
+
 See `examples/` directory for examples.
 
 ## License
