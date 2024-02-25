@@ -10,12 +10,13 @@ require_relative './error'
 module Bouncy
   module Language
     class Interpreter
-      attr_reader :grid, :instruction_pointer
+      attr_reader :grid, :instruction_pointer, :debug_mode
 
       attr_accessor :primary_register, :secondary_register, :memory_pointer, :mode
 
-      def initialize(grid)
+      def initialize(grid, debug_mode)
         @grid = grid
+        @debug_mode = debug_mode
         @instruction_pointer = Pointer.new(grid.bounds, grid.find_starting_point)
         @data_arrays = Instruction::Mode.each.map { |mode| [mode, DataArray.new] }.to_h
         @mode = Instruction::Mode.default
@@ -38,11 +39,13 @@ module Bouncy
       end
 
       def run_once
-        #p("#{@instruction_pointer.position.y+1}, #{@instruction_pointer.position.x}")
         current_char = grid[instruction_pointer.position] || ' '
         command = Instruction.command(current_char)
         raise Error, "Unknown command #{current_char}" unless command
 
+        if debug_mode
+          puts "Executing #{current_char} at #{@instruction_pointer.position} (mode = #{Instruction::Mode[mode]})"
+        end
         command.call(self)
         instruction_pointer.advance
       end
