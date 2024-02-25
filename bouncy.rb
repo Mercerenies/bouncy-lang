@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require_relative './point'
-require_relative './instruction'
-require_relative './instruction/mode'
-require_relative './language/grid'
-require_relative './language/interpreter'
+require_relative './bouncy/point'
+require_relative './bouncy/instruction'
+require_relative './bouncy/instruction/mode'
+require_relative './bouncy/language/grid'
+require_relative './bouncy/language/interpreter'
 
 def execute_program(program_string)
-  grid = Language::Grid.load_from_string(program_string)
+  grid = Bouncy::Language::Grid.load_from_string(program_string)
   if grid.empty? # Prevents division by zero errors when assigning instruction pointer
-    grid = Language::Grid.new
-    grid[Point[0, 0]] = ' '
+    grid = Bouncy::Language::Grid.new
+    grid[Bouncy::Point[0, 0]] = ' '
   end
-  interpreter = Language::Interpreter.new(grid)
+  interpreter = Bouncy::Language::Interpreter.new(grid)
   interpreter.run
 end
 
