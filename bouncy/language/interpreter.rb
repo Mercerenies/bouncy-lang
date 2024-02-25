@@ -44,7 +44,10 @@ module Bouncy
         raise Error, "Unknown command #{current_char}" unless command
 
         if debug_mode
-          puts "Executing #{current_char} at #{@instruction_pointer.position} (mode = #{Instruction::Mode[mode]})"
+          puts(
+            "Executing #{current_char} at #{@instruction_pointer.position} " \
+            "(mode = #{Instruction::Mode[mode]}, delta = #{instruction_pointer.delta})",
+          )
         end
         command.call(self)
         instruction_pointer.advance
