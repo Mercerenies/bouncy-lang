@@ -14,7 +14,11 @@ module Language
     end
 
     def position=(value)
-      self.position = value % grid_bounds
+      @position = value % grid_bounds
+    end
+
+    def advance
+      self.position += delta
     end
   end
 end

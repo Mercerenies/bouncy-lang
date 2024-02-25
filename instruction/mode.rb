@@ -18,5 +18,9 @@ module Instruction
     def self.count
       all.size
     end
+
+    def self.default
+      BOUNCE
+    end
   end
 end
